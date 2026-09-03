@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Virtual env
+venv/
+.venv/
+
+# Data & hasil (opsional - hapus baris ini jika ingin menyertakan data/model di repo)
+results/
+*.csv
+*.pkl
+
+# OS
+.DS_Store
