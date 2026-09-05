@@ -1,16 +1,16 @@
-# Analisis Sentimen Twitter dengan Naive Bayes
+# Twitter Sentiment Analysis with Naive Bayes
 
-Proyek ini adalah pipeline lengkap untuk melakukan **analisis sentimen data Twitter berbahasa Indonesia**, mulai dari preprocessing teks mentah hingga klasifikasi menggunakan **Multinomial Naive Bayes**.
+This project is a complete pipeline for performing **sentiment analysis on Indonesian-language Twitter data**, from raw text preprocessing to classification using **Multinomial Naive Bayes**.
 
-## 🧩 Alur Proyek
+## 🧩 Project Flow
 
 ```
-data mentah (.csv)
+raw data (.csv)
       │
       ▼
 [1] preprocessing.py
-      │  - case folding (lowercase, hapus mention/hashtag/URL/angka/simbol)
-      │  - tokenisasi (NLTK)
+      │  - case folding (lowercase, remove mentions/hashtags/URLs/numbers/symbols)
+      │  - tokenization (NLTK)
       │  - stemming (Sastrawi)
       │  - stopwords removal
       ▼
@@ -18,94 +18,94 @@ data_preprocessed.csv
       │
       ▼
 [2] naive_bayes_classifier.py
-      │  - auto-labeling (positif / negatif / netral) berbasis keyword
-      │  - split train/test
-      │  - ekstraksi fitur: CountVectorizer vs TF-IDF vs N-gram
-      │  - training & pemilihan model terbaik
-      │  - evaluasi (accuracy, precision, recall, F1, confusion matrix)
-      │  - cross-validation 5-fold
+      │  - keyword-based auto-labeling (positive / negative / neutral)
+      │  - train/test split
+      │  - feature extraction: CountVectorizer vs TF-IDF vs N-gram
+      │  - training & best-model selection
+      │  - evaluation (accuracy, precision, recall, F1, confusion matrix)
+      │  - 5-fold cross-validation
       ▼
-model + vectorizer (.pkl) + laporan evaluasi
+model + vectorizer (.pkl) + evaluation report
 ```
 
-## 📁 Struktur Folder
+## 📁 Folder Structure
 
 ```
 .
 ├── src/
-│   ├── preprocessing.py          # Tahap 1: pembersihan & normalisasi teks
-│   └── naive_bayes_classifier.py # Tahap 2: training & evaluasi model
-├── img/                          # Dokumentasi screenshot hasil eksekusi
+│   ├── preprocessing.py          # Stage 1: text cleaning & normalization
+│   └── naive_bayes_classifier.py # Stage 2: model training & evaluation
+├── img/                          # Documentation screenshots
 ├── requirements.txt
 └── README.md
 ```
 
-## ⚙️ Instalasi
+## ⚙️ Installation
 
 ```bash
-git clone https://github.com/USERNAME/NAMA-REPO.git
-cd NAMA-REPO
+git clone https://github.com/USERNAME/REPO-NAME.git
+cd REPO-NAME
 pip install -r requirements.txt
 ```
 
-## 🚀 Cara Menjalankan
+## 🚀 How to Run
 
-**1. Preprocessing data mentah**
+**1. Preprocess raw data**
 
-Data input minimal harus punya kolom `full_text`.
+The input data must at least have a `full_text` column.
 
 ```bash
-python src/preprocessing.py --input data_mentah.csv --output data_preprocessed.csv
+python src/preprocessing.py --input raw_data.csv --output data_preprocessed.csv
 ```
 
-**2. Training & evaluasi model**
+**2. Train & evaluate the model**
 
 ```bash
 python src/naive_bayes_classifier.py --input data_preprocessed.csv --outdir results/
 ```
 
-Output yang dihasilkan di folder `results/`:
-- `naive_bayes_model.pkl` — model terlatih
-- `vectorizer.pkl` — vectorizer (Count/TF-IDF/N-gram) terbaik
-- `label_distribution.png` — grafik distribusi label
-- `confusion_matrix.png` — confusion matrix model terbaik
-- `data_preprocessed_labeled.csv` — data lengkap dengan label
+Output generated in the `results/` folder:
+- `naive_bayes_model.pkl` — trained model
+- `vectorizer.pkl` — best vectorizer (Count/TF-IDF/N-gram)
+- `label_distribution.png` — label distribution chart
+- `confusion_matrix.png` — confusion matrix of the best model
+- `data_preprocessed_labeled.csv` — full data with labels
 
-## 🛠️ Teknologi
+## 🛠️ Tech Stack
 
 - **Python** — pandas, numpy
-- **NLP**: NLTK (tokenisasi, stopwords), Sastrawi (stemming Bahasa Indonesia)
+- **NLP**: NLTK (tokenization, stopwords), Sastrawi (Indonesian stemming)
 - **Machine Learning**: scikit-learn (`MultinomialNB`, `CountVectorizer`, `TfidfVectorizer`)
-- **Visualisasi**: matplotlib, seaborn
+- **Visualization**: matplotlib, seaborn
 
-## 📊 Metodologi
+## 📊 Methodology
 
-Karena dataset tidak memiliki label sentimen bawaan, label dibuat otomatis dengan pendekatan **keyword-based labeling** (kata-kata yang mengindikasikan sentimen positif/negatif). Tiga strategi ekstraksi fitur dibandingkan (Count, TF-IDF, N-gram) dan model dengan akurasi tertinggi dipilih sebagai model final, lalu divalidasi lebih lanjut dengan 5-fold cross-validation.
+Since the dataset doesn't come with built-in sentiment labels, labels are generated automatically using a **keyword-based labeling** approach (words indicating positive/negative sentiment). Three feature extraction strategies are compared (Count, TF-IDF, N-gram), and the model with the highest accuracy is selected as the final model, then further validated with 5-fold cross-validation.
 
-> Catatan: pendekatan labeling berbasis keyword ini sederhana dan cocok untuk keperluan eksplorasi/portofolio. Untuk keperluan produksi, disarankan menggunakan data berlabel manual atau model labeling yang lebih robust.
+> Note: this keyword-based labeling approach is simple and suitable for exploration/portfolio purposes. For production use, manually labeled data or a more robust labeling model is recommended.
 
-## 📸 Dokumentasi
+## 📸 Documentation
 
-Berikut cuplikan hasil eksekusi tiap tahap pipeline di Google Colab.
+Below are screenshots of each pipeline stage running in Google Colab.
 
-### Tahap 1 — Preprocessing (`preprocessing.py`)
-
-| | |
-|---|---|
-| ![Upload data & info awal](img/python1.png) **1. Upload data & info awal**<br>Upload file CSV mentah, install & import library, cek jumlah data (459 tweets) dan kolom `full_text`. | ![Case folding](img/python2.png) **2. Case folding**<br>Contoh data mentah dan hasil case folding (lowercase, pembersihan simbol/URL/angka). |
-| ![Tokenisasi & stemming](img/python3.png) **3. Tokenisasi & stemming**<br>Hasil tokenisasi (13.706 token, rata-rata 29,86 token/tweet) dan stemming menggunakan Sastrawi. | ![Preview hasil akhir](img/python4.png) **4. Preview hasil akhir**<br>Data final setelah filtering (455 tweets) lengkap dengan kolom `text_casefolding`, `text_tokens`, `text_stemmed`, `text_cleaned`, `text_final`. |
-
-![Selesai preprocessing](img/python5.png)
-**5. Preprocessing selesai** — perbandingan teks original vs final untuk 3 sampel data, siap diunduh sebagai `data_preprocessed.csv`.
-
-### Tahap 2 — Klasifikasi Naive Bayes (`naive_bayes_classifier.py`)
+### Stage 1 — Preprocessing (`preprocessing.py`)
 
 | | |
 |---|---|
-| ![Load data & labeling](img/python6.png) **6. Load data & labeling**<br>Upload data hasil preprocessing (455 records) dan auto-labeling berbasis keyword: negatif (322), netral (121), positif (12). | ![Distribusi label](img/python7.png) **7. Distribusi label**<br>Visualisasi jumlah data per kelas sentimen. |
-| ![Training & evaluasi](img/python8.png) **8. Training & evaluasi**<br>Perbandingan Count vs TF-IDF vs N-gram — model terbaik (Count) mencapai akurasi 83,52% dengan precision/recall/F1-score per kelas. | ![Confusion matrix](img/python9.png) **9. Confusion matrix**<br>Confusion matrix model terbaik (Count vectorizer) pada data uji. |
-| ![Cross-validation & prediksi](img/python10.png) **10. Cross-validation & prediksi**<br>Hasil 5-fold cross-validation (80,66% ± 5,23%), fitur teratas per kelas, dan contoh prediksi teks baru. | ![Ringkasan hasil](img/python11.png) **11. Ringkasan hasil**<br>Model & vectorizer tersimpan (`.pkl`), serta ringkasan akhir: 455 sampel data, 364 training, 91 testing, 695 fitur vocabulary. |
+| ![Data upload & initial info](img/python1.png) **1. Data upload & initial info**<br>Upload the raw CSV file, install & import libraries, check data count (459 tweets) and the `full_text` column. | ![Case folding](img/python2.png) **2. Case folding**<br>Sample raw text and the result after case folding (lowercase, removal of symbols/URLs/numbers). |
+| ![Tokenization & stemming](img/python3.png) **3. Tokenization & stemming**<br>Tokenization results (13,706 tokens, average 29.86 tokens/tweet) and stemming using Sastrawi. | ![Final result preview](img/python4.png) **4. Final result preview**<br>Final data after filtering (455 tweets), complete with `text_casefolding`, `text_tokens`, `text_stemmed`, `text_cleaned`, `text_final` columns. |
 
-## ✍️ Penulis
+![Preprocessing complete](img/python5.png)
+**5. Preprocessing complete** — comparison of original vs. final text for 3 sample records, ready to be downloaded as `data_preprocessed.csv`.
 
-Dibuat sebagai bagian dari proyek pembelajaran Natural Language Processing & Machine Learning.
+### Stage 2 — Naive Bayes Classification (`naive_bayes_classifier.py`)
+
+| | |
+|---|---|
+| ![Data loading & labeling](img/python6.png) **6. Data loading & labeling**<br>Upload preprocessed data (455 records) and keyword-based auto-labeling: negative (322), neutral (121), positive (12). | ![Label distribution](img/python7.png) **7. Label distribution**<br>Visualization of record counts per sentiment class. |
+| ![Training & evaluation](img/python8.png) **8. Training & evaluation**<br>Comparison of Count vs. TF-IDF vs. N-gram — the best model (Count) achieves 83.52% accuracy with per-class precision/recall/F1-score. | ![Confusion matrix](img/python9.png) **9. Confusion matrix**<br>Confusion matrix of the best model (Count vectorizer) on the test set. |
+| ![Cross-validation & prediction](img/python10.png) **10. Cross-validation & prediction**<br>5-fold cross-validation results (80.66% ± 5.23%), top features per class, and sample predictions on new text. | ![Results summary](img/python11.png) **11. Results summary**<br>Saved model & vectorizer (`.pkl`), plus final summary: 455 data samples, 364 training, 91 testing, 695 vocabulary features. |
+
+## ✍️ Author
+
+Created as part of a Natural Language Processing & Machine Learning learning project.
